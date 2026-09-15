@@ -7,7 +7,6 @@
     <title>Pro Music Player</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        /* ==================== THEMES ==================== */
         :root, [data-theme="day"] {
             --bg-app: #f0f4f8; --bg-card: #ffffff; --bg-nav: rgba(255, 255, 255, 0.95);
             --text-main: #0f172a; --text-sub: #64748b; --accent: #3b82f6;
@@ -69,7 +68,6 @@
             transition: background 0.5s ease;
         }
 
-        /* ==================== STARS ==================== */
         .stars-container {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             overflow: hidden; pointer-events: none; z-index: 0;
@@ -93,15 +91,13 @@
         }
         @keyframes twinkle { 0%, 100% { opacity: 0.3; transform: scale(1); } 50% { opacity: 0.8; transform: scale(1.2); } }
 
-        /* ==================== SCREEN LAYOUT (FIXED HEADERS) ==================== */
         .screen {
             display: none; flex-direction: column; flex: 1; 
             position: relative; overflow: hidden;
-            padding-bottom: 80px; /* Space for bottom nav */
+            padding-bottom: 80px;
         }
         .screen.active { display: flex; }
         
-        /* Fixed Header Container */
         .screen-header-container {
             padding: 20px 20px 10px 20px;
             flex-shrink: 0;
@@ -109,20 +105,18 @@
             z-index: 10;
         }
         
-        /* Scrollable Content Area */
         .screen-content {
             flex: 1;
             overflow-y: auto;
-            padding: 0 20px 20px 20px;
+            padding: 0 20px 100px 20px;
             z-index: 5;
         }
         .screen-content::-webkit-scrollbar { width: 0px; }
 
-        /* ==================== HEADERS ==================== */
         .screen-header { display: flex; justify-content: space-between; align-items: center; min-height: 50px; }
         .screen-header h1 { font-size: 28px; font-weight: 800; letter-spacing: -0.5px; }
         .screen-header p { font-size: 13px; color: var(--text-sub); margin-top: 2px; }
-        .header-icons { display: flex; gap: 10px; flex-shrink: 0; }
+        .header-icons { display: flex; gap: 10px; flex-shrink: 0; align-items: center; }
         .icon-btn {
             width: 42px; height: 42px; border-radius: 50%; display: flex; justify-content: center;
             align-items: center; background: var(--bg-card); color: var(--text-main);
@@ -132,7 +126,22 @@
         .icon-btn:active { transform: scale(0.9); }
         .icon-btn svg { width: 20px; height: 20px; fill: currentColor; }
 
-        /* ==================== SEARCH ==================== */
+        .connection-status {
+            display: flex; align-items: center; gap: 6px;
+            background: var(--bg-card); padding: 6px 12px; border-radius: 20px;
+            border: 1px solid var(--border); font-size: 11px; font-weight: 600;
+            color: var(--text-sub);
+        }
+        .status-dot {
+            width: 8px; height: 8px; border-radius: 50%;
+            background: #ef4444;
+            box-shadow: 0 0 8px currentColor;
+            transition: background 0.3s;
+        }
+        .status-dot.connected { background: #10b981; }
+        .status-dot.connecting { background: #f59e0b; animation: pulse 1s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+
         .search-bar {
             background: var(--bg-card); border-radius: 16px; padding: 14px 16px;
             display: flex; align-items: center; gap: 10px; margin-top: 10px;
@@ -142,7 +151,6 @@
         .search-bar input { border: none; background: transparent; outline: none; color: var(--text-main); font-size: 14px; width: 100%; }
         .search-bar input::placeholder { color: var(--text-sub); }
 
-        /* ==================== HOME GRID ==================== */
         .home-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 24px; margin-top: 20px; }
         .grid-card {
             background: var(--bg-card); border-radius: 18px; padding: 16px; display: flex;
@@ -159,12 +167,10 @@
         .grid-text h4 { font-size: 13px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .grid-text p { font-size: 11px; color: var(--text-sub); margin-top: 2px; }
 
-        /* ==================== SECTION TITLES ==================== */
         .section-title { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; margin-top: 20px; }
         .section-title h3 { font-size: 17px; font-weight: 700; }
         .section-title span { font-size: 12px; color: var(--accent); cursor: pointer; font-weight: 600; }
 
-        /* ==================== RECENTLY PLAYED ==================== */
         .recent-scroll { display: flex; gap: 14px; overflow-x: auto; padding-bottom: 10px; margin-bottom: 20px; }
         .recent-scroll::-webkit-scrollbar { display: none; }
         .recent-card { min-width: 110px; cursor: pointer; }
@@ -172,7 +178,6 @@
         .recent-card h4 { font-size: 12px; font-weight: 600; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .recent-card p { font-size: 10px; color: var(--text-sub); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-        /* ==================== PLAYER SCREEN ==================== */
         #player-screen { padding-top: 0; background: var(--player-bg); }
         .player-header-container {
             padding: 20px 20px 10px 20px;
@@ -265,7 +270,6 @@
         .volume-slider { flex: 1; height: 4px; background: var(--border); border-radius: 2px; position: relative; cursor: pointer; }
         .volume-fill { height: 100%; background: var(--accent); border-radius: 2px; width: 100%; }
 
-        /* ==================== LIBRARY ==================== */
         .library-tabs { display: flex; gap: 24px; margin-top: 10px; border-bottom: 1px solid var(--border); padding-bottom: 12px; overflow-x: auto; }
         .library-tabs::-webkit-scrollbar { display: none; }
         .lib-tab { 
@@ -303,7 +307,6 @@
         .playlist-card h4 { font-size: 13px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .playlist-card p { font-size: 11px; color: var(--text-sub); margin-top: 2px; }
 
-        /* ==================== MORE ==================== */
         .more-list { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
         .more-item {
             display: flex; justify-content: space-between; align-items: center; padding: 16px;
@@ -321,7 +324,6 @@
         .more-item-right { display: flex; align-items: center; gap: 8px; color: var(--text-sub); font-size: 13px; font-weight: 500; }
         .more-item-right svg { width: 16px; height: 16px; fill: currentColor; }
 
-        /* ==================== BOTTOM NAV ==================== */
         .bottom-nav {
             position: absolute; bottom: 0; left: 0; width: 100%; height: 72px;
             background: var(--bg-nav); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
@@ -336,7 +338,6 @@
         .nav-item span { font-size: 10px; font-weight: 600; }
         .nav-item.active { color: var(--accent); }
 
-        /* ==================== MODALS ==================== */
         .modal-overlay {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); z-index: 200;
@@ -391,6 +392,16 @@
         }
         .btn-secondary:active { transform: scale(0.97); }
 
+        /* Small inline button for empty states */
+        .btn-small {
+            background: var(--accent-gradient); color: white; border: none;
+            padding: 10px 18px; border-radius: 12px; font-size: 13px; font-weight: 700;
+            cursor: pointer; transition: transform 0.2s;
+            display: inline-flex; align-items: center; gap: 6px;
+        }
+        .btn-small:active { transform: scale(0.95); }
+        .btn-small svg { width: 16px; height: 16px; fill: white; }
+
         .theme-preview {
             display: flex; gap: 14px; margin-bottom: 12px; padding: 14px;
             border-radius: 16px; border: 2px solid var(--border); cursor: pointer;
@@ -423,14 +434,15 @@
         .empty-state { text-align: center; padding: 50px 20px; color: var(--text-sub); }
         .empty-state svg { width: 64px; height: 64px; fill: var(--border); margin-bottom: 16px; }
         .empty-state h3 { font-size: 17px; font-weight: 700; color: var(--text-main); margin-bottom: 8px; }
-        .empty-state p { font-size: 13px; }
+        .empty-state p { font-size: 13px; margin-bottom: 16px; }
 
         .toast {
             position: absolute; bottom: 110px; left: 50%; transform: translateX(-50%);
             background: var(--text-main); color: var(--bg-app); padding: 12px 24px;
             border-radius: 24px; font-size: 13px; font-weight: 600; z-index: 1000;
             box-shadow: 0 8px 24px rgba(0,0,0,0.3); white-space: nowrap;
-            animation: toastFade 0.3s ease;
+            animation: toastFade 0.3s ease; max-width: 90%;
+            overflow: hidden; text-overflow: ellipsis;
         }
         @keyframes toastFade { from { opacity: 0; transform: translateX(-50%) translateY(10px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
 
@@ -447,7 +459,6 @@
         }
         .loading-text { font-size: 14px; color: var(--text-sub); font-weight: 600; }
 
-        /* About Info Rows */
         .info-row {
             display: flex; justify-content: space-between;
             padding: 14px 0; border-bottom: 1px solid var(--border);
@@ -471,9 +482,33 @@
             <div class="loading-text" id="loading-text">Scanning your music...</div>
         </div>
 
+        <!-- ================= LIBRARY (Now the default screen) ================= -->
+        <div class="screen active" id="library-screen">
+            <div class="screen-header-container">
+                <div class="screen-header">
+                    <div><h1 id="library-title">Library</h1></div>
+                    <div class="header-icons">
+                        <div class="connection-status" id="connection-status">
+                            <span class="status-dot" id="status-dot"></span>
+                            <span id="status-text">Offline</span>
+                        </div>
+                        <div class="icon-btn" onclick="rescanMusic()">
+                            <svg viewBox="0 0 24 24"><path d="M17.65 6.35A7.958 7.958 0 0012 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0112 18c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg>
+                        </div>
+                    </div>
+                </div>
+                <div class="library-tabs" id="library-tabs">
+                    <div class="lib-tab active" data-tab="songs" onclick="switchLibTab('songs')">Songs</div>
+                    <div class="lib-tab" data-tab="artists" onclick="switchLibTab('artists')">Artists</div>
+                    <div class="lib-tab" data-tab="albums" onclick="switchLibTab('albums')">Albums</div>
+                    <div class="lib-tab" data-tab="playlists" onclick="switchLibTab('playlists')">Playlists</div>
+                </div>
+            </div>
+            <div class="screen-content" id="library-content"></div>
+        </div>
+
         <!-- ================= HOME ================= -->
-        <div class="screen active" id="home-screen">
-            <!-- FIXED HEADER -->
+        <div class="screen" id="home-screen">
             <div class="screen-header-container">
                 <div class="screen-header">
                     <div>
@@ -492,7 +527,6 @@
                 </div>
             </div>
 
-            <!-- SCROLLABLE CONTENT -->
             <div class="screen-content">
                 <div class="home-grid">
                     <div class="grid-card" onclick="showLibraryTab('songs')">
@@ -531,10 +565,9 @@
 
         <!-- ================= PLAYER ================= -->
         <div class="screen" id="player-screen">
-            <!-- FIXED HEADER -->
             <div class="player-header-container">
                 <div class="player-header">
-                    <div class="icon-btn" onclick="switchScreen('home')">
+                    <div class="icon-btn" onclick="switchScreen('library')">
                         <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
                     </div>
                     <span style="font-size: 12px; font-weight: 700; color: var(--text-sub); letter-spacing: 1px;">NOW PLAYING</span>
@@ -544,7 +577,6 @@
                 </div>
             </div>
 
-            <!-- SCROLLABLE CONTENT -->
             <div class="screen-content">
                 <div class="player-art-wrapper" id="player-art-wrapper">
                     <div class="orbit-container">
@@ -606,33 +638,8 @@
             </div>
         </div>
 
-        <!-- ================= LIBRARY ================= -->
-        <div class="screen" id="library-screen">
-            <!-- FIXED HEADER -->
-            <div class="screen-header-container">
-                <div class="screen-header">
-                    <div><h1 id="library-title">Songs</h1></div>
-                    <div class="header-icons">
-                        <div class="icon-btn" onclick="rescanMusic()">
-                            <svg viewBox="0 0 24 24"><path d="M17.65 6.35A7.958 7.958 0 0012 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0112 18c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg>
-                        </div>
-                    </div>
-                </div>
-                <div class="library-tabs" id="library-tabs">
-                    <div class="lib-tab active" data-tab="songs" onclick="switchLibTab('songs')">Songs</div>
-                    <div class="lib-tab" data-tab="artists" onclick="switchLibTab('artists')">Artists</div>
-                    <div class="lib-tab" data-tab="albums" onclick="switchLibTab('albums')">Albums</div>
-                    <div class="lib-tab" data-tab="playlists" onclick="switchLibTab('playlists')">Playlists</div>
-                </div>
-            </div>
-
-            <!-- SCROLLABLE CONTENT -->
-            <div class="screen-content" id="library-content"></div>
-        </div>
-
         <!-- ================= MORE ================= -->
         <div class="screen" id="more-screen">
-            <!-- FIXED HEADER -->
             <div class="screen-header-container">
                 <div class="screen-header">
                     <div><h1>More</h1></div>
@@ -644,7 +651,6 @@
                 </div>
             </div>
 
-            <!-- SCROLLABLE CONTENT -->
             <div class="screen-content">
                 <div class="more-list">
                     <div class="more-item" onclick="openModal('settings-modal')">
@@ -698,7 +704,6 @@
             </div>
         </div>
 
-        <!-- ================= MINI PLAYER ================= -->
         <div class="mini-player" id="global-mini-player" onclick="switchScreen('player')">
             <img src="" id="mini-art" alt="Album Art">
             <div class="mini-info">
@@ -712,13 +717,12 @@
             </div>
         </div>
 
-        <!-- ================= BOTTOM NAV ================= -->
         <div class="bottom-nav">
-            <div class="nav-item active" onclick="switchScreen('home', this)">
+            <div class="nav-item" onclick="switchScreen('home', this)">
                 <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
                 <span>Home</span>
             </div>
-            <div class="nav-item" onclick="switchScreen('library', this)">
+            <div class="nav-item active" onclick="switchScreen('library', this)">
                 <svg viewBox="0 0 24 24"><path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-1 9H9V9h10v2zm-4 4H9v-2h6v2zm4-8H9V5h10v2z"/></svg>
                 <span>Library</span>
             </div>
@@ -765,6 +769,13 @@
                     <div class="setting-desc">Switch based on time of day</div>
                 </div>
                 <label class="switch"><input type="checkbox" id="auto-theme-toggle" checked onchange="toggleAutoTheme()"><span class="slider"></span></label>
+            </div>
+            <div class="setting-item">
+                <div>
+                    <div class="setting-label">Sync Playback</div>
+                    <div class="setting-desc">Allow remote control from other devices</div>
+                </div>
+                <label class="switch"><input type="checkbox" id="sync-toggle" onchange="toggleSync()"><span class="slider"></span></label>
             </div>
             <div class="setting-item">
                 <div>
@@ -870,6 +881,14 @@
                 <span class="info-value">South Africa 🇿🇦</span>
             </div>
             <div class="info-row">
+                <span class="info-label">Server Status</span>
+                <span class="info-value" id="about-server-status">Checking...</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Connected Peers</span>
+                <span class="info-value" id="about-peers">0</span>
+            </div>
+            <div class="info-row">
                 <span class="info-label">Made with</span>
                 <span class="info-value">❤️ & Web Tech</span>
             </div>
@@ -891,9 +910,168 @@
         let currentTheme = localStorage.getItem('theme') || 'auto';
         let autoThemeEnabled = localStorage.getItem('autoTheme') !== 'false';
         let musicDirHandle = null;
+        let syncEnabled = localStorage.getItem('syncEnabled') === 'true';
+        let isLoading = false;
         
         const audio = new Audio();
         audio.volume = 1.0;
+        
+        // ==================== WEBSOCKET ====================
+        let socket = null;
+        let clientId = null;
+        let currentRoom = 'default';
+        let isConnectedToServer = false;
+        let connectedPeers = 0;
+        let reconnectAttempts = 0;
+        const MAX_RECONNECT = 10;
+        
+        function connectToServer() {
+            if (location.protocol === 'file:') {
+                console.log('📁 Running as file — WebSocket disabled.');
+                updateConnectionStatus(false);
+                return;
+            }
+            
+            updateConnectionStatus('connecting');
+            
+            try {
+                socket = new WebSocket(`ws://${location.host}`);
+                
+                socket.onopen = () => {
+                    isConnectedToServer = true;
+                    reconnectAttempts = 0;
+                    updateConnectionStatus(true);
+                    console.log('🔌 Connected to server');
+                    
+                    safeSend('join-room', { roomId: currentRoom, name: getDeviceName() });
+                };
+                
+                socket.onmessage = (event) => {
+                    try {
+                        const msg = JSON.parse(event.data);
+                        handleServerMessage(msg);
+                    } catch(e) { console.warn('Bad message:', e); }
+                };
+                
+                socket.onclose = () => {
+                    isConnectedToServer = false;
+                    updateConnectionStatus(false);
+                    console.log('🔌 Disconnected');
+                    
+                    if (reconnectAttempts < MAX_RECONNECT) {
+                        reconnectAttempts++;
+                        setTimeout(connectToServer, 3000);
+                    }
+                };
+                
+                socket.onerror = () => console.warn('WebSocket error');
+            } catch (e) {
+                console.warn('Could not connect:', e);
+                updateConnectionStatus(false);
+            }
+        }
+        
+        function getDeviceName() {
+            const ua = navigator.userAgent;
+            if (/Android/i.test(ua)) return 'Android';
+            if (/iPhone|iPad|iPod/i.test(ua)) return 'iOS';
+            if (/Mac/i.test(ua)) return 'Mac';
+            if (/Windows/i.test(ua)) return 'Windows';
+            if (/Linux/i.test(ua)) return 'Linux';
+            return 'Device';
+        }
+        
+        function handleServerMessage(msg) {
+            const { type, payload } = msg;
+            
+            switch (type) {
+                case 'welcome':
+                    clientId = payload.clientId;
+                    console.log('👋 Server:', payload.message);
+                    break;
+                case 'room-joined':
+                    connectedPeers = payload.memberCount;
+                    updatePeersCount();
+                    break;
+                case 'user-joined':
+                    connectedPeers = payload.memberCount || connectedPeers + 1;
+                    updatePeersCount();
+                    showToast(`👋 ${payload.name} joined`);
+                    break;
+                case 'user-left':
+                    connectedPeers = Math.max(0, connectedPeers - 1);
+                    updatePeersCount();
+                    showToast(`👋 ${payload.name} left`);
+                    break;
+                case 'now-playing':
+                    if (syncEnabled) showToast(`🎵 ${payload.fromName}: ${payload.track.title}`);
+                    break;
+                case 'control':
+                    if (syncEnabled) {
+                        if (payload.action === 'play' && !isPlaying) togglePlay();
+                        else if (payload.action === 'pause' && isPlaying) togglePlay();
+                        else if (payload.action === 'next') nextTrack();
+                        else if (payload.action === 'prev') prevTrack();
+                    }
+                    break;
+                case 'playback-update':
+                    if (syncEnabled && payload.isPlaying !== undefined) {
+                        if (payload.isPlaying && !isPlaying) togglePlay();
+                        if (!payload.isPlaying && isPlaying) togglePlay();
+                    }
+                    break;
+            }
+        }
+        
+        function safeSend(type, payload) {
+            if (socket && socket.readyState === WebSocket.OPEN) {
+                try { socket.send(JSON.stringify({ type, payload })); } catch(e) {}
+            }
+        }
+        
+        function updateConnectionStatus(status) {
+            const dot = document.getElementById('status-dot');
+            const text = document.getElementById('status-text');
+            if (!dot || !text) return;
+            
+            dot.classList.remove('connected', 'connecting');
+            
+            if (status === true) {
+                dot.classList.add('connected');
+                text.textContent = connectedPeers > 1 ? `${connectedPeers} online` : 'Online';
+            } else if (status === 'connecting') {
+                dot.classList.add('connecting');
+                text.textContent = 'Connecting';
+            } else {
+                text.textContent = 'Offline';
+            }
+            
+            const aboutStatus = document.getElementById('about-server-status');
+            if (aboutStatus) {
+                aboutStatus.textContent = status === true ? '🟢 Connected' : (status === 'connecting' ? '🟡 Connecting' : '🔴 Offline');
+            }
+        }
+        
+        function updatePeersCount() {
+            updateConnectionStatus(isConnectedToServer);
+            const aboutPeers = document.getElementById('about-peers');
+            if (aboutPeers) aboutPeers.textContent = connectedPeers;
+        }
+        
+        function toggleSync() {
+            syncEnabled = document.getElementById('sync-toggle').checked;
+            localStorage.setItem('syncEnabled', syncEnabled);
+            showToast(syncEnabled ? '🎮 Remote sync on' : '🎮 Remote sync off');
+        }
+        
+        function broadcastPlayback(track) {
+            safeSend('now-playing', { track: { title: track.title, artist: track.artist } });
+        }
+        
+        function broadcastControl(action, value) {
+            if (!syncEnabled) return;
+            safeSend('control', { action, value });
+        }
         
         // ==================== INDEXEDDB ====================
         const DB_NAME = 'MusicPlayerDB';
@@ -922,11 +1100,8 @@
                 store.clear();
                 for (const track of tracks) {
                     store.put({
-                        id: track.id,
-                        title: track.title,
-                        artist: track.artist,
-                        album: track.album,
-                        cover: track.cover,
+                        id: track.id, title: track.title, artist: track.artist,
+                        album: track.album, cover: track.cover,
                         filePath: track.filePath || ''
                     });
                 }
@@ -941,7 +1116,11 @@
                 const store = tx.objectStore(STORE_NAME);
                 const req = store.getAll();
                 return new Promise((resolve) => {
-                    req.onsuccess = () => resolve(req.result || []);
+                    req.onsuccess = () => {
+                        const all = req.result || [];
+                        // Filter out the special handle record
+                        resolve(all.filter(t => t.id !== '__musicDirHandle__'));
+                    };
                     req.onerror = () => resolve([]);
                 });
             } catch(e) { return []; }
@@ -953,19 +1132,22 @@
             document.getElementById('auto-theme-toggle').checked = autoThemeEnabled;
             document.getElementById('shuffle-toggle').checked = isShuffle;
             document.getElementById('repeat-toggle').checked = repeatMode === 'one';
+            document.getElementById('sync-toggle').checked = syncEnabled;
             document.getElementById('volume-fill').style.width = '100%';
             applyInitialTheme();
-            updateUI();
             loadRecentlyPlayed();
+            updateUI();
             
             setInterval(() => {
                 if (autoThemeEnabled) applyTheme(getAutoTheme());
             }, 60000);
             
+            connectToServer();
             await autoRestoreMusic();
         };
         
         async function autoRestoreMusic() {
+            // Try to restore the folder handle first
             if ('showDirectoryPicker' in window) {
                 try {
                     const savedHandle = await getSavedDirectoryHandle();
@@ -975,18 +1157,21 @@
                             await loadMusicFromDirectory(savedHandle, true);
                             return;
                         }
+                        // If permission is 'prompt', we still want to show what's in DB but not silently scan
                     }
                 } catch(e) { console.warn('Auto-restore failed', e); }
             }
             
+            // Fall back to showing cached metadata from IndexedDB
             const saved = await loadTracksFromDB();
             if (saved.length > 0) {
                 allTracks = saved.map(t => ({...t, url: null, file: null}));
                 updateUI();
                 loadRecentlyPlayed();
-                showToast('Tap "Rescan Music" to reload files');
+                showToast(`📚 ${saved.length} songs loaded — tap Rescan to play`);
             } else {
-                setTimeout(() => openModal('scan-modal'), 800);
+                // No music yet — show empty state in Library (which is the default screen)
+                updateUI();
             }
         }
         
@@ -1032,34 +1217,47 @@
         }
         
         async function loadMusicFromDirectory(dirHandle, silent) {
+            if (isLoading) return;
+            isLoading = true;
+            
             showLoading(true, silent ? 'Auto-scanning your music...' : 'Scanning your music...');
             
-            const files = [];
-            await scanDirectory(dirHandle, files);
-            
-            if (files.length === 0) {
-                showLoading(false);
-                if (!silent) showToast('No audio files found');
-                return;
-            }
-            
-            allTracks = [];
-            for (let i = 0; i < files.length; i++) {
-                const file = files[i];
-                try {
-                    const track = await extractMetadata(file);
-                    allTracks.push(track);
-                    if (i % 10 === 0) updateLoadingText(`Loading ${i + 1}/${files.length}...`);
-                } catch (e) {
-                    allTracks.push(fallbackFromFilename(file));
+            try {
+                const files = [];
+                await scanDirectory(dirHandle, files);
+                
+                if (files.length === 0) {
+                    showLoading(false);
+                    isLoading = false;
+                    if (!silent) showToast('No audio files found');
+                    updateUI();
+                    return;
                 }
+                
+                allTracks = [];
+                for (let i = 0; i < files.length; i++) {
+                    const file = files[i];
+                    try {
+                        const track = await extractMetadata(file);
+                        allTracks.push(track);
+                        if (i % 10 === 0) updateLoadingText(`Loading ${i + 1}/${files.length}...`);
+                    } catch (e) {
+                        allTracks.push(fallbackFromFilename(file));
+                    }
+                }
+                
+                await saveTracksToDB(allTracks);
+                showLoading(false);
+                isLoading = false;
+                updateUI();
+                loadRecentlyPlayed();
+                showToast(silent ? `✅ Auto-loaded ${allTracks.length} songs` : `✅ Loaded ${allTracks.length} songs`);
+            } catch (e) {
+                console.error('Scan failed:', e);
+                showLoading(false);
+                isLoading = false;
+                showToast('Scan failed. Please try again.');
             }
-            
-            await saveTracksToDB(allTracks);
-            showLoading(false);
-            updateUI();
-            loadRecentlyPlayed();
-            showToast(silent ? `Auto-loaded ${allTracks.length} songs` : `Loaded ${allTracks.length} songs`);
         }
         
         async function scanDirectory(dirHandle, results, path = '') {
@@ -1101,7 +1299,7 @@
             showLoading(false);
             updateUI();
             loadRecentlyPlayed();
-            showToast(`Loaded ${allTracks.length} songs`);
+            showToast(`✅ Loaded ${allTracks.length} songs`);
         }
         
         async function rescanMusic() {
@@ -1119,6 +1317,20 @@
                     return;
                 } catch(e) { console.warn(e); }
             }
+            
+            // If we have a saved handle in DB, use it
+            const savedHandle = await getSavedDirectoryHandle();
+            if (savedHandle) {
+                try {
+                    const permission = await savedHandle.requestPermission({ mode: 'read' });
+                    if (permission === 'granted') {
+                        musicDirHandle = savedHandle;
+                        await loadMusicFromDirectory(savedHandle, false);
+                        return;
+                    }
+                } catch(e) { console.warn(e); }
+            }
+            
             openModal('scan-modal');
         }
         
@@ -1168,8 +1380,7 @@
                         resolve({
                             id: 'track_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9),
                             title, artist, album, cover: coverUrl,
-                            file: file,
-                            filePath: file.webkitRelativePath || file.name,
+                            file: file, filePath: file.webkitRelativePath || file.name,
                             url: URL.createObjectURL(file)
                         });
                     } catch(e) {
@@ -1195,8 +1406,7 @@
                 id: 'track_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9),
                 title, artist, album,
                 cover: 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=300&h=300&fit=crop',
-                file: file,
-                filePath: file.webkitRelativePath || file.name,
+                file: file, filePath: file.webkitRelativePath || file.name,
                 url: URL.createObjectURL(file)
             };
         }
@@ -1317,24 +1527,28 @@
             document.getElementById('home-artist-count').textContent = `${artists.length} artists`;
             const albums = [...new Set(allTracks.map(t => t.album))];
             document.getElementById('home-album-count').textContent = `${albums.length} albums`;
-            document.getElementById('home-playlist-count').textContent = `${favorites.length > 0 ? 1 : 0} playlists`;
+            const favTracks = allTracks.filter(t => favorites.includes(t.id));
+            document.getElementById('home-playlist-count').textContent = `${favTracks.length > 0 ? 1 : 0} playlists`;
             renderLibraryContent();
             updateMiniPlayer();
         }
 
         function switchScreen(screenId, navElement) {
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-            document.getElementById(screenId + '-screen').classList.add('active');
+            const targetScreen = document.getElementById(screenId + '-screen');
+            if (targetScreen) targetScreen.classList.add('active');
+            
             if (navElement) {
                 document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
                 navElement.classList.add('active');
             } else {
                 document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
                 const navItems = document.querySelectorAll('.nav-item');
-                if (screenId === 'home') navItems[0].classList.add('active');
-                if (screenId === 'library') navItems[1].classList.add('active');
-                if (screenId === 'more') navItems[2].classList.add('active');
+                if (screenId === 'home' && navItems[0]) navItems[0].classList.add('active');
+                if (screenId === 'library' && navItems[1]) navItems[1].classList.add('active');
+                if (screenId === 'more' && navItems[2]) navItems[2].classList.add('active');
             }
+            
             if (screenId === 'library') renderLibraryContent();
         }
 
@@ -1346,28 +1560,32 @@
         function switchLibTab(tab) {
             currentLibraryTab = tab;
             document.querySelectorAll('.lib-tab').forEach(t => t.classList.remove('active'));
-            document.querySelector(`.lib-tab[data-tab="${tab}"]`).classList.add('active');
+            const tabEl = document.querySelector(`.lib-tab[data-tab="${tab}"]`);
+            if (tabEl) tabEl.classList.add('active');
             const titles = { songs: 'Songs', artists: 'Artists', albums: 'Albums', playlists: 'Playlists' };
-            document.getElementById('library-title').textContent = titles[tab];
+            const titleEl = document.getElementById('library-title');
+            if (titleEl) titleEl.textContent = titles[tab];
             renderLibraryContent();
         }
 
-        // ==================== LIBRARY ====================
         function renderLibraryContent() {
             const container = document.getElementById('library-content');
+            if (!container) return;
+            
             if (allTracks.length === 0) {
                 container.innerHTML = `
                     <div class="empty-state">
                         <svg viewBox="0 0 24 24"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
-                        <h3>No music found</h3>
-                        <p>Tap below to grant music folder access</p>
-                        <button class="btn-primary" style="margin-top: 20px; width: auto; display: inline-flex;" onclick="requestMusicFolder()">
-                            <svg viewBox="0 0 24 24" style="width:20px;height:20px;fill:white;"><path d="M10 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z"/></svg>
-                            Grant Music Access
+                        <h3>No music yet</h3>
+                        <p>Grant access to your music folder</p>
+                        <button class="btn-small" onclick="requestMusicFolder()">
+                            <svg viewBox="0 0 24 24"><path d="M10 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z"/></svg>
+                            Scan Device Music
                         </button>
                     </div>`;
                 return;
             }
+            
             if (currentLibraryTab === 'songs') {
                 container.innerHTML = `<div class="song-list">${allTracks.map((track, i) => createSongItem(track, i, allTracks)).join('')}</div>`;
             } else if (currentLibraryTab === 'artists') {
@@ -1415,7 +1633,6 @@
         function filterByAlbum(album) { currentQueue = allTracks.filter(t => t.album === album); playFromQueue(0); }
         function playPlaylist(name) { if (name === 'favorites') { currentQueue = allTracks.filter(t => favorites.includes(t.id)); playFromQueue(0); } }
 
-        // ==================== PLAYBACK ====================
         function playFromQueue(index) {
             if (allTracks.length === 0) return;
             if (currentQueue.length === 0) currentQueue = [...allTracks];
@@ -1436,6 +1653,7 @@
                 addToRecentlyPlayed(track);
                 updateMiniPlayer();
                 renderLibraryContent();
+                broadcastPlayback(track);
             }).catch(e => {
                 console.error("Playback failed:", e);
                 showToast("Could not play this file");
@@ -1445,15 +1663,23 @@
         function togglePlay() {
             if (allTracks.length === 0) { requestMusicFolder(); return; }
             if (currentTrackIndex === -1) { currentQueue = [...allTracks]; playFromQueue(0); return; }
-            if (isPlaying) { audio.pause(); isPlaying = false; }
-            else { audio.play().catch(e => console.error(e)); isPlaying = true; }
+            if (isPlaying) { 
+                audio.pause(); 
+                isPlaying = false;
+                safeSend('playback-update', { isPlaying: false });
+            }
+            else { 
+                audio.play().catch(e => console.error(e)); 
+                isPlaying = true;
+                safeSend('playback-update', { isPlaying: true });
+            }
             updatePlayPauseUI();
-            updatePlayerAnimation();
             renderLibraryContent();
         }
 
         function prevTrack() {
             if (currentQueue.length === 0) return;
+            broadcastControl('prev');
             if (audio.currentTime > 3) { audio.currentTime = 0; return; }
             let newIndex = currentTrackIndex - 1;
             if (newIndex < 0) newIndex = currentQueue.length - 1;
@@ -1462,6 +1688,7 @@
 
         function nextTrack() {
             if (currentQueue.length === 0) return;
+            broadcastControl('next');
             let newIndex;
             if (isShuffle) newIndex = Math.floor(Math.random() * currentQueue.length);
             else { newIndex = currentTrackIndex + 1; if (newIndex >= currentQueue.length) newIndex = 0; }
@@ -1473,14 +1700,14 @@
             const miniPlayIcon = document.getElementById('mini-play-icon');
             const playingPath = '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>';
             const pausedPath = '<path d="M8 5v14l11-7z"/>';
-            playIcon.innerHTML = isPlaying ? playingPath : pausedPath;
-            miniPlayIcon.innerHTML = isPlaying ? playingPath : pausedPath;
+            if (playIcon) playIcon.innerHTML = isPlaying ? playingPath : pausedPath;
+            if (miniPlayIcon) miniPlayIcon.innerHTML = isPlaying ? playingPath : pausedPath;
             updatePlayerAnimation();
         }
 
         function updatePlayerAnimation() {
             const wrapper = document.getElementById('player-art-wrapper');
-            wrapper.classList.toggle('playing', isPlaying);
+            if (wrapper) wrapper.classList.toggle('playing', isPlaying);
         }
 
         function updatePlayerScreen(track) {
@@ -1542,12 +1769,11 @@
             document.getElementById('volume-fill').style.width = (percent * 100) + '%';
         }
 
-        // ==================== SHUFFLE & REPEAT ====================
         function toggleShuffle() {
             isShuffle = !isShuffle;
             document.getElementById('shuffle-toggle').checked = isShuffle;
             const btn = document.getElementById('shuffle-btn');
-            btn.style.color = isShuffle ? 'var(--accent)' : 'var(--text-main)';
+            if (btn) btn.style.color = isShuffle ? 'var(--accent)' : 'var(--text-main)';
             showToast(isShuffle ? 'Shuffle On' : 'Shuffle Off');
         }
 
@@ -1557,15 +1783,17 @@
             else repeatMode = 'off';
             document.getElementById('repeat-toggle').checked = repeatMode === 'one';
             const btn = document.getElementById('repeat-btn');
-            if (repeatMode === 'off') {
-                btn.style.color = 'var(--text-main)';
-                btn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M7 7h10v3l4-4-4-4v3H5v6h2V7zm10 10H7v-3l-4 4 4 4v-3h12v-6h-2v4z"/></svg>';
-            } else if (repeatMode === 'all') {
-                btn.style.color = 'var(--accent)';
-                btn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M7 7h10v3l4-4-4-4v3H5v6h2V7zm10 10H7v-3l-4 4 4 4v-3h12v-6h-2v4z"/></svg>';
-            } else {
-                btn.style.color = 'var(--accent)';
-                btn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M7 7h10v3l4-4-4-4v3H5v6h2V7zm10 10H7v-3l-4 4 4 4v-3h12v-6h-2v4z"/></svg>';
+            if (btn) {
+                if (repeatMode === 'off') {
+                    btn.style.color = 'var(--text-main)';
+                    btn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M7 7h10v3l4-4-4-4v3H5v6h2V7zm10 10H7v-3l-4 4 4 4v-3h12v-6h-2v4z"/></svg>';
+                } else if (repeatMode === 'all') {
+                    btn.style.color = 'var(--accent)';
+                    btn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M7 7h10v3l4-4-4-4v3H5v6h2V7zm10 10H7v-3l-4 4 4 4v-3h12v-6h-2v4z"/></svg>';
+                } else {
+                    btn.style.color = 'var(--accent)';
+                    btn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M7 7h10v3l4-4-4-4v3H5v6h2V7zm10 10H7v-3l-4 4 4 4v-3h12v-6h-2v4z"/></svg>';
+                }
             }
             showToast(`Repeat: ${repeatMode}`);
         }
@@ -1582,7 +1810,6 @@
             showToast(idx > -1 ? 'Removed from Favorites' : 'Added to Favorites');
         }
 
-        // ==================== RECENT ====================
         function addToRecentlyPlayed(track) {
             recentlyPlayed = recentlyPlayed.filter(id => id !== track.id);
             recentlyPlayed.unshift(track.id);
@@ -1593,6 +1820,7 @@
 
         function loadRecentlyPlayed() {
             const container = document.getElementById('recently-played-container');
+            if (!container) return;
             if (recentlyPlayed.length === 0 || allTracks.length === 0) {
                 container.innerHTML = '<div class="empty-state" style="padding: 10px; width: 100%;"><p style="font-size: 12px;">No recent music.</p></div>';
                 return;
@@ -1623,20 +1851,33 @@
 
         function handleSearch() {
             const query = document.getElementById('search-input').value.toLowerCase();
-            if (query.length === 0) { updateUI(); return; }
+            if (query.length === 0) { 
+                switchScreen('home');
+                return; 
+            }
             const results = allTracks.filter(t => 
                 t.title.toLowerCase().includes(query) || 
                 t.artist.toLowerCase().includes(query) || 
                 t.album.toLowerCase().includes(query));
             switchScreen('library');
             document.getElementById('library-title').textContent = `Search: "${query}"`;
-            document.getElementById('library-content').innerHTML = 
-                `<div class="song-list">${results.map((track, i) => createSongItem(track, i, results)).join('')}</div>`;
+            const container = document.getElementById('library-content');
+            if (results.length === 0) {
+                container.innerHTML = '<div class="empty-state"><h3>No results</h3><p>Try a different search</p></div>';
+            } else {
+                container.innerHTML = `<div class="song-list">${results.map((track, i) => createSongItem(track, i, results)).join('')}</div>`;
+            }
         }
 
-        // ==================== MODALS & UI ====================
-        function openModal(id) { document.getElementById(id).classList.add('active'); }
-        function closeModal(id) { document.getElementById(id).classList.remove('active'); }
+        function openModal(id) { 
+            const el = document.getElementById(id);
+            if (el) el.classList.add('active'); 
+            if (id === 'about-modal') updateConnectionStatus(isConnectedToServer);
+        }
+        function closeModal(id) { 
+            const el = document.getElementById(id);
+            if (el) el.classList.remove('active');
+        }
         
         document.querySelectorAll('.modal-overlay').forEach(overlay => {
             overlay.addEventListener('click', (e) => {
@@ -1650,7 +1891,8 @@
             const toast = document.createElement('div');
             toast.className = 'toast';
             toast.textContent = message;
-            document.querySelector('.app-container').appendChild(toast);
+            const container = document.querySelector('.app-container');
+            if (container) container.appendChild(toast);
             setTimeout(() => {
                 toast.style.opacity = '0';
                 toast.style.transition = 'opacity 0.3s';
@@ -1660,6 +1902,7 @@
 
         function showLoading(show, text) {
             const overlay = document.getElementById('loading-overlay');
+            if (!overlay) return;
             if (show) {
                 if (text) document.getElementById('loading-text').textContent = text;
                 overlay.classList.add('active');
@@ -1667,7 +1910,8 @@
         }
 
         function updateLoadingText(text) {
-            document.getElementById('loading-text').textContent = text;
+            const el = document.getElementById('loading-text');
+            if (el) el.textContent = text;
         }
     </script>
 </body>
