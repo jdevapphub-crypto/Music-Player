@@ -469,8 +469,12 @@
     </style>
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#3b82f6">
-    <link rel="icon" href="icon.png">
+    <link rel="icon" href="icon-192.png">
+    <link rel="apple-touch-icon" href="icon-512.png">
     <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Music">
+    <meta name="mobile-web-app-capable" content="yes">
 
 <script>
 if ('serviceWorker' in navigator) {
@@ -914,6 +918,7 @@ if ('serviceWorker' in navigator) {
         let recentlyPlayed = JSON.parse(localStorage.getItem('recentlyPlayed')) || [];
         let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
         let currentQueue = [];
+        let displayedQueue = []; // the list currently rendered on screen (songs/search results) — kept separate from currentQueue so clicking a row always plays the right track
         let currentTrackIndex = -1;
         let isPlaying = false;
         let isShuffle = false;
@@ -1166,6 +1171,7 @@ if ('serviceWorker' in navigator) {
                     if (savedHandle) {
                         const permission = await savedHandle.queryPermission({ mode: 'read' });
                         if (permission === 'granted') {
+                            musicDirHandle = savedHandle; // remember it so later resumes/rescans don't need to hit IndexedDB again
                             await loadMusicFromDirectory(savedHandle, true);
                             return;
                         }
@@ -1186,6 +1192,37 @@ if ('serviceWorker' in navigator) {
                 updateUI();
             }
         }
+
+        // Re-scan silently whenever the app is reopened or brought back to
+        // the foreground, as long as permission was already granted once.
+        // NOTE: no browser lets a web app touch the device filesystem with
+        // zero prior user interaction, ever — that's a security boundary,
+        // not a bug. This is the closest to "fully automatic" that's
+        // actually possible: one tap the very first time, silent after that.
+        async function silentRescanIfPossible() {
+            if (isLoading || !musicDirHandle) return;
+            try {
+                const permission = await musicDirHandle.queryPermission({ mode: 'read' });
+                if (permission === 'granted') {
+                    await loadMusicFromDirectory(musicDirHandle, true);
+                }
+            } catch(e) { console.warn('Silent rescan failed', e); }
+        }
+
+        document.addEventListener('visibilitychange', () => {
+            if (document.visibilityState === 'visible') silentRescanIfPossible();
+        });
+
+        // Right after the user installs the app to their home screen, ask
+        // for the music folder immediately — still needs one tap (browsers
+        // require a real user gesture for filesystem access), but it makes
+        // the one-time setup happen as part of installing rather than a
+        // separate step later.
+        window.addEventListener('appinstalled', () => {
+            if (allTracks.length === 0 && !musicDirHandle) {
+                openModal('scan-modal');
+            }
+        });
         
         // ==================== FILE SYSTEM ====================
         async function getSavedDirectoryHandle() {
@@ -1599,7 +1636,8 @@ if ('serviceWorker' in navigator) {
             }
             
             if (currentLibraryTab === 'songs') {
-                container.innerHTML = `<div class="song-list">${allTracks.map((track, i) => createSongItem(track, i, allTracks)).join('')}</div>`;
+                displayedQueue = allTracks;
+                container.innerHTML = `<div class="song-list">${allTracks.map((track, i) => createSongItem(track, i)).join('')}</div>`;
             } else if (currentLibraryTab === 'artists') {
                 const artists = [...new Set(allTracks.map(t => t.artist))];
                 container.innerHTML = `<div class="playlist-grid">${artists.map(artist => {
@@ -1632,13 +1670,28 @@ if ('serviceWorker' in navigator) {
             }
         }
 
-        function createSongItem(track, index, queue) {
-            const isActive = currentQueue === queue && currentTrackIndex === index;
-            return `<div class="song-item ${isActive ? 'active' : ''}" onclick="playFromQueue(${index})">
+        function createSongItem(track, index) {
+            // Identify "is this the row currently playing" by track id, not by
+            // array reference or index — those can point at completely
+            // different queues (search results vs. full library vs. an
+            // artist filter) and used to cause the wrong row to highlight
+            // and the wrong song to play.
+            const playingTrack = (currentTrackIndex !== -1 && currentQueue[currentTrackIndex]) ? currentQueue[currentTrackIndex] : null;
+            const isActive = !!playingTrack && playingTrack.id === track.id;
+            return `<div class="song-item ${isActive ? 'active' : ''}" onclick="playDisplayedIndex(${index})">
                 <img src="${track.cover}" class="song-img" alt="${track.title}">
                 <div class="song-details"><h4>${track.title}</h4><p>${track.artist}</p></div>
                 ${isActive && isPlaying ? '<div class="playing-indicator"><span></span><span></span><span></span></div>' : ''}
             </div>`;
+        }
+
+        // Every song-list render sets displayedQueue to the exact array it
+        // rendered from. Tapping a row always plays out of THAT list, so the
+        // index always lines up with what's on screen.
+        function playDisplayedIndex(index) {
+            if (!displayedQueue.length || index < 0 || index >= displayedQueue.length) return;
+            currentQueue = displayedQueue;
+            playFromQueue(index);
         }
 
         function filterByArtist(artist) { currentQueue = allTracks.filter(t => t.artist === artist); playFromQueue(0); }
@@ -1877,7 +1930,8 @@ if ('serviceWorker' in navigator) {
             if (results.length === 0) {
                 container.innerHTML = '<div class="empty-state"><h3>No results</h3><p>Try a different search</p></div>';
             } else {
-                container.innerHTML = `<div class="song-list">${results.map((track, i) => createSongItem(track, i, results)).join('')}</div>`;
+                displayedQueue = results;
+                container.innerHTML = `<div class="song-list">${results.map((track, i) => createSongItem(track, i)).join('')}</div>`;
             }
         }
 
